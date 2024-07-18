@@ -1,6 +1,6 @@
-# Pirate Software Game Jam 15
+# ShadowDyne Inc
 
-## ShadowDyne Inc
+## Pirate Software Game Jam 15
 
 ### THEME:
 Shadows and Alchemy
