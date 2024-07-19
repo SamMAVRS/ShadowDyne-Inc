@@ -4,6 +4,7 @@ import Bootloader from './scenes/Bootloader.scene';
 import Game from './scenes/Game.scene';
 import GameOver from './scenes/GameOver.scene';
 import Splash from './scenes/Splash.scene';
+import Upgrade from './scenes/Upgrade.scene';
 
 
 
@@ -25,7 +26,7 @@ const config = {
         },
     },
 
-    scene: [Bootloader, Game, GameOver, Splash],
+    scene: [Bootloader, Game, GameOver, Splash, Upgrade],
 };
 
 
