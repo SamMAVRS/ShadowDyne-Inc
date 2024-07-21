@@ -26,8 +26,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.resist_bleed_value = 0;
 
         // Object Gear
-        this.primary_damage_value = 5;
-        this.super_damage_value = 10;
+        this.damage_primary_value = 5;
+        this.damage_super_value = 10;
         this.armor_value = 0;
     }
 }

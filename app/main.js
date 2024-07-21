@@ -10,6 +10,7 @@ import Upgrade from './scenes/Upgrade.scene';
 
 const config = {
     type: Phaser.AUTO,
+    render: { pixelArt: true },         // Prevents pixels from blurring when scaled up
     width: 600,
     height: 300,
     scale: {
