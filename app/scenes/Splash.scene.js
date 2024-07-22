@@ -30,8 +30,20 @@ export default class Splash extends Phaser.Scene {
 
 
         // ---- PLAYER CHARACTER LEFT OF TITLE CARD ---- //
-        this.title_card = this.add.bitmapText(this.center_width, this.center_height / 2, 'global_font', "SHADOWDYNE", 54).setOrigin(0.5, 0.5);
-        this.title_card = this.add.bitmapText(this.center_width, this.center_height / 1.2, 'global_font', "The RE:Shadowdynening 2", 32).setOrigin(0.5, 0.5);
+        this.title_card = this.add.bitmapText(
+            this.center_width,
+            this.center_height / 2,
+            'global_font', "SHADOWDYNE INC",
+            54)
+            .setOrigin(0.5, 0.5);
+
+        this.title_card = this.add.bitmapText(
+            this.center_width,
+            this.center_height / 1.2,
+            'global_font',
+            "The RE:Shadowdynening 2",
+            32)
+            .setOrigin(0.5, 0.5);
 
         // ---- PLAYER CHARACTER ABOVER TITLE CARD ---- //
         // this.title_card = this.add.bitmapText(this.center_width, this.center_height / 1.1, 'global_font', "SHADOWDYNE", 54).setOrigin(0.5, 0.5);

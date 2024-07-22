@@ -1,6 +1,6 @@
 export default class Upgrade extends Phaser.Scene {
     constructor () {
-        super({ key: 'upgrade' });
+        super({ key: 'workshop' });
     }
 
 

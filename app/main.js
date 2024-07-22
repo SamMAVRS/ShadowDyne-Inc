@@ -4,7 +4,7 @@ import Bootloader from './scenes/Bootloader.scene';
 import Game from './scenes/Game.scene';
 import GameOver from './scenes/GameOver.scene';
 import Splash from './scenes/Splash.scene';
-import Upgrade from './scenes/Upgrade.scene';
+import Workshop from './scenes/Workshop.scene';
 
 
 
@@ -22,12 +22,12 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 150 },              // --- TEMP GRAVITY SETTING ---
+            gravity: { y: 150 },        // --- TEMP GRAVITY SETTING MAYBE ---
             debug: true,
         },
     },
 
-    scene: [Bootloader, Game, GameOver, Splash, Upgrade],
+    scene: [Bootloader, Game, GameOver, Splash, Workshop],
 };
 
 
