@@ -1,0 +1,22 @@
+[
+    {
+        "mob_id": 0,
+        "mob_name": "rock"
+    },
+    {
+        "mob_id": 1,
+        "mob_name": "fire"
+    },
+    {
+        "mob_id": 2,
+        "mob_name": "lightning"
+    },
+    {
+        "mob_id": 3,
+        "mob_name": "glob"
+    },
+    {
+        "mob_id": 4,
+        "mob_name": "blood"
+    }
+]
