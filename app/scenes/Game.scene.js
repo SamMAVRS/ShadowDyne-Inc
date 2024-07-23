@@ -20,7 +20,6 @@ export default class Game extends Phaser.Scene {
         this.bullet = null;
         this.loot_value;
         this.loot_text;
-        this.TEST_PLAYER;
     }
 
 
@@ -59,6 +58,9 @@ export default class Game extends Phaser.Scene {
 
 
 
+
+
+
     handle_player_texture(is_moving) {
         if (is_moving) {
             this.player.setTexture("player_a");
@@ -73,14 +75,15 @@ export default class Game extends Phaser.Scene {
 
 
 
+
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
     // ------------- MARK: H_ENEMIES ------------- // 
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    handle_enemies() {
-        // this.player = new Player(this, this.center_width, this.center_height);
-    }
+    handle_enemies() { }
 
 
 
@@ -88,10 +91,7 @@ export default class Game extends Phaser.Scene {
     // ------------- MARK: H_BULLET ------------- // 
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    handle_bullet() {
-        // this.player = new Bullet(this, this.center_width, this.center_height, "bullet");
-
-    }
+    handle_bullet() { }
 
 
 
@@ -100,9 +100,7 @@ export default class Game extends Phaser.Scene {
     // ------------- MARK: H_COLLIDERS ------------- // 
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    handle_colliders() {
-        // this.player = new Player(this, this.center_width, this.center_height);
-    }
+    handle_colliders() { }
 
 
 
@@ -114,7 +112,6 @@ export default class Game extends Phaser.Scene {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     handle_keyboard_input() {
-        // this.input.keyboard.enabled = true;
         this.curser = this.input.keyboard.createCursorKeys();
         this.W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -123,7 +120,6 @@ export default class Game extends Phaser.Scene {
         this.SPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.SHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     }
-    // console.log("\n GAME_SCENE--------------H_KEYBRD:\n", this.curser);
 
 
 
@@ -137,80 +133,24 @@ export default class Game extends Phaser.Scene {
     update() {
         if (this.curser.left.isDown || this.A.isDown) {
             this.handle_player_texture(true);
-            // this.player.setTexture("player_a");
             this.player.flipX = true;
             this.player.x -= PLAYER_SPEED;
-            // console.log("\n GAME_SCENE--------------UPDATE--P_IMG_LEFT:\n", this.player);
         }
         if (this.curser.right.isDown || this.D.isDown) {
             this.handle_player_texture(true);
-            // this.player.setTexture("player_a");
             this.player.flipX = false;
             this.player.x += PLAYER_SPEED;
         }
         if (this.curser.up.isDown || this.W.isDown) {
             this.handle_player_texture(true);
-            // this.player.setTexture("player_a");
             this.player.y -= PLAYER_SPEED;
         }
         if (this.curser.down.isDown || this.S.isDown) {
             this.handle_player_texture(true);
-            // this.player.setTexture("player_a");
             this.player.y += PLAYER_SPEED;
         }
         if (this.curser.space.isDown || this.SPACE.isDown) {
             this.handle_player_texture(true);
-            // this.player.setTexture("player_a");
-            // this.player.flipX = true;
-            // this.player.x -= PLAYER_SPEED;
-            // console.log("\n GAME_SCENE--------------UPDATE--P_IMG_LEFT:\n", this.player);
-        }
-
-
-        // if (this.curser.left.isUp || this.A.isUp) {
-        //     this.player.setTexture("player_n");
-        //     this.player.flipX = true;
-        // }
-        // if (this.curser.right.isUp || this.D.isUp) {
-        //     this.player.setTexture("player_n");
-        //     this.player.flipX = false;
-        // }
-        // if (this.curser.up.isUp || this.W.isUp) {
-        //     this.player.setTexture("player_n");
-        // }
-        // if (this.curser.down.isUp || this.S.isUp) {
-        //     this.player.setTexture("player_n");
-        // }
-
-
-
-
-
-
-
-
-
-        if (Phaser.Input.Keyboard.JustDown(this.SPACE)) {
-            console.log("PEW PEW\n\n");
-            // this.player.setTexture("player_a");
-            // this.handle_player_texture(true);
-            // console.log("JUSTDOWN_SPACE\n\n", Phaser.Input.Keyboard);
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.A)) {
-            console.log("LEFT\n");
-            // this.player.setTexture("player_a");
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.D)) {
-            console.log("RIGHT\n");
-            // this.player.setTexture("player_a");
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.W)) {
-            console.log("UP\n");
-            // this.player.setTexture("player_a");
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.S)) {
-            console.log("DOWN\n");
-            // this.player.setTexture("player_a");
         }
 
 
@@ -232,10 +172,4 @@ export default class Game extends Phaser.Scene {
         }
 
     }
-
-
-
-
-
-
 }
