@@ -24,8 +24,8 @@ export default class Splash extends Phaser.Scene {
 
         this.cameras.main.setBackgroundColor('#585858');
 
-        this.add_images();
-        this.add_button();
+        this.handle_images();
+        this.handle_button();
 
 
 
@@ -50,31 +50,32 @@ export default class Splash extends Phaser.Scene {
         // this.title_card = this.add.bitmapText(this.center_width, this.center_height * 1.2, 'global_font', "The RE:Shadowdynening 2", 32).setOrigin(0.5, 0.5);
 
 
-
         this.cursor = this.input.mouse.enabled = true;
     }
 
 
 
-    add_images() {
+
+
+    handle_images() {
         // ---- PLAYER CHARACTER LEFT OF TITLE CARD ---- //
-        this.add.image(this.center_width / 7.5, this.center_height * 1.4, 'player_neutral_01_img')
+        this.add.image(this.center_width / 7.5, this.center_height * 1.4, 'player_n')
             .setOrigin(0.5, 0.5)
             .setScale(5);
 
 
         // ---- PLAYER CHARACTER ABOVER TITLE CARD ---- //
-        // this.add.image(this.center_width / 2, this.center_height / 2, 'player_neutral_01_img')
+        // this.add.image(this.center_width / 2, this.center_height / 2, 'player_neutral_02_img')
         //     .setOrigin(0.5, 0.5)
         //     .setScale(4);
     }
 
 
-    add_button() {
+    handle_button() {
         // this.button = new Button(this, this.center_width, this.center_height * 1.3, 190, 40, 0xCCCCCC);
         this.button = new Button(this, this.center_width, this.center_height * 1.3, 190, 40);
         this.button.setInteractive().on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-            this.scene.switch('game');
+            this.scene.start('game');
         });
 
 

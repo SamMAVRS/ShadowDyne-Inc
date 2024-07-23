@@ -22,7 +22,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 150 },        // --- TEMP GRAVITY SETTING MAYBE ---
+            gravity: { y: 0 },
             debug: true,
         },
     },
