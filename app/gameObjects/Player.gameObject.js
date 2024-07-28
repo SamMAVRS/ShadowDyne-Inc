@@ -3,51 +3,51 @@ import Bullet from "./Bullet.gameObject";
 const PLAYER_SPEED = 2;
 
 export default class Player extends Phaser.GameObjects.Image {
-    constructor (scene, x, y, img) {
+    constructor (scene, x, y, img, resist = 'kenetic', name = 'player') {
         super(scene, x, y, img);
         this.img = img;
-        this.name = 'player';
+        this.resist = resist;
+        this.name = name;
+        // this.name = 'player';
 
-        // Phaser Stuff
+        // --- PHASER STUFF --- //
         this.setScale(2);
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.body.setCollideWorldBounds(true);
         this.body.setAllowGravity(false);
-        this.body.setImmovable(true);
         this.body.setSize(this.body.width / 7, this.body.height / 2.3);         // HITBOX SIZE
+        // this.body.setImmovable(true);
 
-        // Static Base Values
+        // --- STATIC VALUES --- //
         this.health_value = 100;
 
-        // Object State
+        // --- STATE --- //
         this.is_dead = false;
         this.is_invincible = true;
-        this.is_shooting = false;                               // ---- MIGHT NOT NEED THIS ----- //
+        this.is_damaged = false;
+        this.is_hit = false;
 
-        // Event Triggers
-        this.on_hit;
-        this.on_shooting;
+        // --- EVENT TRIGGERS --- //
+        // this.on_hit;
         this.on_keyboard_input();
 
-        // Object Resistences
+        // --- OBJECT RESISTENCES --- //
         this.resist_kenetic_value = 0;
         this.resist_thermal_value = 0;
         this.resist_shock_value = 0;
         this.resist_poison_value = 0;
         this.resist_bleed_value = 0;
 
-        // Object Gear
+        // --- OBJECT GEAR --- //
         this.damage_primary_value = 5;
         this.damage_super_value = 10;
         this.armor_value = 0;
 
-        // Handlers
+        // --- HANDLERS --- //
         this.handle_player_texture();
 
-
-
-        // ACTION DELAY --- So player doesnt shoot a billion times a second
+        // --- ACTION DELAY --- So player doesnt shoot a billion times a second --- //
         this.interval = 150;            // TIME IN MILLISECONDS BETWEEN ACTIONS
         this.last_shot = -1;            // ALLOWS ACTION TO FIRE IF NEVER HAVE
         this.current_delta = 1;         // BECOMES INTERVAL AFTER INITIAL CALL
@@ -58,7 +58,7 @@ export default class Player extends Phaser.GameObjects.Image {
 
 
 
-    handle_shooting(x, y, time) {
+    handle_shooting(x, y, time, width, height) {
 
         // MAKE OBJ GO TOWARDS DIRECTION OF MOUSE POINTER //
         // --- MOUSE_POINTER - PLAYER_OBJECT === COORD --- //
@@ -71,18 +71,20 @@ export default class Player extends Phaser.GameObjects.Image {
         // --- SET_LENGTH === FORCES WHATEVER DESIRED SPEED OF OBJ --- //
         vector.setLength(200);
 
-        // this.bullet = new Bullet(this.scene, this.x, this.y, 'kenetic', vector.x, vector.y);
-
-
-
         // DELAY FUNCTION CALL --- FN get called 60x per sec without delay
-        let elapsed_time = (time / 1000).toFixed(0);        // TIME IN SECONDS SINCE SCENE START
+        // let elapsed_time = (time / 1000).toFixed(0);        // TIME IN SECONDS SINCE SCENE START
 
         if (this.last_shot == -1 || this.last_shot + this.current_delta <= time) {
             this.last_shot = time;
             this.current_delta = this.interval;
 
-            this.bullet = new Bullet(this.scene, this.x, this.y, 'kenetic', vector.x, vector.y);
+            this.bullet = new Bullet(this.scene, this.x, this.y, this.resist, vector.x, vector.y, width, height);
+            // console.log("PLAYER_OBJ--SHOOTING--------BULLET:\n\n", this.bullet);
+
+
+
+            // --- Adds the new BULLET to the scenes BULLET_GROUP for collision purposes --- //
+            this.scene.bullet_group.add(this.bullet);
         }
     }
 
@@ -98,11 +100,11 @@ export default class Player extends Phaser.GameObjects.Image {
         this.S = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.D = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.SPACE = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.SHIFT = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
 
 
         // ------- MAYBE I MIGHT USE THIS??? ----------------------------- //
+        // this.SHIFT = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         // this.MMOVE = this.scene.input.mousePointer.angle;
         // this.MCLICK = this.scene.input.mousePointer.getAngle;
     }
@@ -112,12 +114,12 @@ export default class Player extends Phaser.GameObjects.Image {
 
 
 
-    handle_player_texture(is_moving) {
-        if (is_moving) {
+    handle_player_texture(event) {
+        if (event) {
             this.setTexture("player_a");
         }
 
-        if (!is_moving) {
+        if (!event) {
             setTimeout(() => {
                 this.setTexture("player_n");
             }, 200);
@@ -126,7 +128,7 @@ export default class Player extends Phaser.GameObjects.Image {
 
 
 
-    update(time, delta) {
+    update(time, delta, width, height) {
         if (this.is_dead) return;
 
 
@@ -176,8 +178,18 @@ export default class Player extends Phaser.GameObjects.Image {
 
         if (this.scene.input.mousePointer.isDown) {
             console.log("PEW PEW\n\n");
-            this.handle_shooting(this.scene.input.mousePointer.x, this.scene.input.mousePointer.y, time);
+            this.handle_player_texture(true);
+            this.handle_shooting(this.scene.input.mousePointer.x, this.scene.input.mousePointer.y, time, width, height);
+
+            if (this.bullet) {
+                this.bullet.update(time, delta, width, height);             // --- FOR DESTROYING OBJ - Not working --- //
+            }
+            setTimeout(() => {
+                this.handle_player_texture(false);
+
+            }, 200);
         }
+
 
 
 
@@ -195,4 +207,17 @@ export default class Player extends Phaser.GameObjects.Image {
         // ------------------------------------------------------------- //
 
     }
+
+
+
+
+
+
+    on_death() {
+        console.log("\n\n PLAYER_OBJ--ON_DEATH----------------:\n\n");
+        this.is_dead = true;
+        super.destroy();
+    }
+
+
 }
