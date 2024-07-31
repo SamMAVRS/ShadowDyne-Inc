@@ -1,56 +1,69 @@
 import Bullet from "./Bullet.gameObject";
 
-const PLAYER_SPEED = 2;
+const PLAYER_SPEED = 5;
 
 export default class Player extends Phaser.GameObjects.Image {
-    constructor (scene, x, y, img, resist = 'kenetic', name = 'player') {
+    constructor (scene, x, y, img = 'player_n', resist = 'kenetic', name = 'player') {
         super(scene, x, y, img);
         this.img = img;
         this.resist = resist;
         this.name = name;
         // this.name = 'player';
 
+
         // --- PHASER STUFF --- //
-        this.setScale(2);
+        this.setScale(5);
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.body.setCollideWorldBounds(true);
         this.body.setAllowGravity(false);
-        this.body.setSize(this.body.width / 7, this.body.height / 2.3);         // HITBOX SIZE
+        this.body.setSize(this.body.width / 16, this.body.height / 6);         // HITBOX SIZE
+        // this.body.setSize(this.body.width / 7, this.body.height / 2.3);         // HITBOX SIZE
         // this.body.setImmovable(true);
 
+        this.body.setBounce(0.1);
+
+
         // --- STATIC VALUES --- //
-        this.health_value = 100;
+        // this.health_value = 100;
 
         // --- STATE --- //
-        this.is_dead = false;
+        // this.is_dead = false;
+        this.is_dead = this.scene.registry.values.player_schema.is_dead;;
         this.is_invincible = true;
         this.is_damaged = false;
         this.is_hit = false;
+
+        console.log("PLAYER_OBJ--CONST--------------IS_DEAD:\n\n", this.scene.registry.values.player_schema.is_dead);
+        console.log("PLAYER_OBJ--CONST--------------PLAYER_BODY:\n\n", this.body);
+
 
         // --- EVENT TRIGGERS --- //
         // this.on_hit;
         this.on_keyboard_input();
 
         // --- OBJECT RESISTENCES --- //
-        this.resist_kenetic_value = 0;
-        this.resist_thermal_value = 0;
-        this.resist_shock_value = 0;
-        this.resist_poison_value = 0;
-        this.resist_bleed_value = 0;
+        // this.resist_kenetic_value = 0;
+        // this.resist_thermal_value = 0;
+        // this.resist_shock_value = 0;
+        // this.resist_poison_value = 0;
+        // this.resist_bleed_value = 0;
 
         // --- OBJECT GEAR --- //
-        this.damage_primary_value = 5;
-        this.damage_super_value = 10;
-        this.armor_value = 0;
+        // this.damage_primary_value = 5;
+        // this.damage_super_value = 10;
+        // this.armor_value = 0;
 
         // --- HANDLERS --- //
         this.handle_player_texture();
 
         // --- ACTION DELAY --- So player doesnt shoot a billion times a second --- //
-        this.interval = 150;            // TIME IN MILLISECONDS BETWEEN ACTIONS
+        this.interval = 250;            // TIME IN MILLISECONDS BETWEEN ACTIONS
         this.last_shot = -1;            // ALLOWS ACTION TO FIRE IF NEVER HAVE
         this.current_delta = 1;         // BECOMES INTERVAL AFTER INITIAL CALL
+
+        // --- SETTIMEOUT HANDLE_PLAYER_TEXTURE() --- //
+        this.timeout = [];
     }
 
 
@@ -58,7 +71,8 @@ export default class Player extends Phaser.GameObjects.Image {
 
 
 
-    handle_shooting(x, y, time, width, height) {
+
+    handle_shooting(x, y, time, width, height, resist) {
 
         // MAKE OBJ GO TOWARDS DIRECTION OF MOUSE POINTER //
         // --- MOUSE_POINTER - PLAYER_OBJECT === COORD --- //
@@ -77,11 +91,7 @@ export default class Player extends Phaser.GameObjects.Image {
         if (this.last_shot == -1 || this.last_shot + this.current_delta <= time) {
             this.last_shot = time;
             this.current_delta = this.interval;
-
-            this.bullet = new Bullet(this.scene, this.x, this.y, this.resist, vector.x, vector.y, width, height);
-            // console.log("PLAYER_OBJ--SHOOTING--------BULLET:\n\n", this.bullet);
-
-
+            this.bullet = new Bullet(this.scene, this.x, this.y, resist, vector.x, vector.y, width, height);
 
             // --- Adds the new BULLET to the scenes BULLET_GROUP for collision purposes --- //
             this.scene.bullet_group.add(this.bullet);
@@ -115,21 +125,44 @@ export default class Player extends Phaser.GameObjects.Image {
 
 
     handle_player_texture(event) {
-        if (event) {
-            this.setTexture("player_a");
-        }
+        // console.log("\n\n PLAYER_OBJ--TEXTURE----------------TIMEOUT:\n\n", this.timeout);
+        this.onCancel = () => {
+            // --- This takes all the TIMEOUT() IDs and clears out the MOST RECENT --- //
+            // --- Im not entirely sure if this actually works though since CLEARTIMEOUT() doesnt return anything --- //
+            for (let i = 0; i < this.timeout.length; i++) {
+                clearTimeout(this.timeout);
+                this.timeout = [];
+            }
+        };
 
-        if (!event) {
-            setTimeout(() => {
-                this.setTexture("player_n");
-            }, 200);
-        }
+        if (event) {
+            if (this.is_dead == true || typeof this.timeout === "object") {
+                this.onCancel();
+            }
+            this.setTexture("player_a");
+            // --- TIMEOUT() is so stance changes arent rapid for USER feedback --- //
+            return this.timeout.push(setTimeout(() => {
+                // --- THIS STATEMENT IS NEEDED IN ORDER TO FIX THE "SETTEXTURE" ERROR --- //
+                // --- When the OBJ gets Destroyed(), TIMEOUT() will still keep running --- //
+                // --- Will fail to find a BODY to SETTEXTURE to and then ERROR out --- //
+                if (!this.body || this.is_dead || !this) {
+                    this.onCancel();
+                    this.timeout = [];
+                    return;
+                } else {
+                    this.setTexture("player_n");
+                }
+            }, 500));
+        };
     }
 
 
 
-    update(time, delta, width, height) {
-        if (this.is_dead) return;
+    update(time, delta, width, height, data) {
+        // console.log("PLAYER_OBJ--UPDATE---------------:\n\n");
+        if (!this || this.is_dead || !this.body) {
+            return;
+        }
 
 
 
@@ -179,15 +212,8 @@ export default class Player extends Phaser.GameObjects.Image {
         if (this.scene.input.mousePointer.isDown) {
             console.log("PEW PEW\n\n");
             this.handle_player_texture(true);
-            this.handle_shooting(this.scene.input.mousePointer.x, this.scene.input.mousePointer.y, time, width, height);
+            this.handle_shooting(this.scene.input.mousePointer.x, this.scene.input.mousePointer.y, time, width, height, data.primary_weap.name);
 
-            if (this.bullet) {
-                this.bullet.update(time, delta, width, height);             // --- FOR DESTROYING OBJ - Not working --- //
-            }
-            setTimeout(() => {
-                this.handle_player_texture(false);
-
-            }, 200);
         }
 
 
@@ -214,9 +240,15 @@ export default class Player extends Phaser.GameObjects.Image {
 
 
     on_death() {
+        console.log("\n\n PLAYER_OBJ--ON_DEATH----------------IS_DEAD:\n\n", this.is_dead);
+        // this.setTexture("player_n");
+        // this.is_dead = true;
+        // this.handle_player_texture(true);
         console.log("\n\n PLAYER_OBJ--ON_DEATH----------------:\n\n");
-        this.is_dead = true;
+        // clearTimeout(this.on_timeout);
+        // this.destroy();
         super.destroy();
+        // return;
     }
 
 

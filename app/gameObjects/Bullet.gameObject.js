@@ -1,8 +1,8 @@
 const RESISTENCES = {
     kenetic: { name: 'kenetic', color: 0xf7f7f7, radius: 8, intensity: 0.5 },
     thermal: { name: 'thermal', color: 0xffcb36, radius: 8, intensity: 0.5 },
-    shock: { name: 'shock', color: 0x2688ff, radius: 8, intensity: 0.5 },
-    poison: { name: 'poison', color: 0x00d170, radius: 8, intensity: 0.5 },
+    shock: { name: 'shock', color: 0x1AA7EC, radius: 8, intensity: 0.5 },
+    poison: { name: 'poison', color: 0x00FF00, radius: 8, intensity: 0.5 },
     bleed: { name: 'bleed', color: 0xf70505, radius: 8, intensity: 0.5 },
 };
 
@@ -21,9 +21,10 @@ export default class Bullet extends Phaser.GameObjects.PointLight {
         // this.name = name;
         this.width = width;
         this.height = height;
+        this.resist = resist;
 
-
-        // console.log("BULLET-----------RESISTENCE_RESIST:\n\n", RESISTENCES[resist]);
+        console.log("BULLET-----------RESISTENCE_RESIST:\n\n", RESISTENCES[resist]);
+        console.log("BULLET-----------THIS_RESIST:\n\n", this.resist);
 
 
         // this.bullet_resist = {
@@ -51,6 +52,8 @@ export default class Bullet extends Phaser.GameObjects.PointLight {
         // this.body.on_world_collide = true;
         this.body.setVelocityX(velocityX);
         this.body.setVelocityY(velocityY);
+
+        // this.body.mass = 1;
 
         // --- STATE ---
         this.is_dead = false;
@@ -93,28 +96,47 @@ export default class Bullet extends Phaser.GameObjects.PointLight {
 
 
     on_kenetic(x, y, resistence) {
+
         // console.log("ON_KENETIC-----------X:\n\n", x);
         // console.log("ON_KENETIC-----------Y:\n\n", y);
         // console.log("ON_KENETIC-----------RESISTENCE:\n\n", resistence);
-        this.body.setVelocityX(x * 2);
-        this.body.setVelocityY(y * 2);
+
+        RESISTENCES.kenetic;
+        // this.RESISTENCES.kenetic;
+
+        this.body.setVelocityX(x * 5);
+        this.body.setVelocityY(y * 5);
+        // this.body.setVelocityX(x * 2.5);
+        // this.body.setVelocityY(y * 2.5);
+        // this.body.setVelocityX(x);
+        // this.body.setVelocityY(y);
+
     }
 
 
 
     on_thermal(x, y, resistence) {
-        // console.log("ON_THERMAL-----------X:\n\n", x);
-        // console.log("ON_THERMAL-----------Y:\n\n", y);
         // console.log("ON_THERMAL-----------RESISTENCE:\n\n", resistence);
-        this.body.setVelocityX(x / 2);
-        this.body.setVelocityY(y / 2);
+        this.body.setVelocityX(x * 1.5);
+        this.body.setVelocityY(y * 1.5);
     }
 
 
 
-    on_shock(x, y, resistence) { }
-    on_poision(x, y, resistence) { }
-    on_bleed(x, y, resistence) { }
+    on_shock(x, y, resistence) {
+        this.body.setVelocityX(x / 1.2);
+        this.body.setVelocityY(y / 1.2);
+
+    }
+    on_poision(x, y, resistence) {
+        this.body.setVelocityX(x / 2);
+        this.body.setVelocityY(y / 2);
+    }
+    on_bleed(x, y, resistence) {
+        this.body.setVelocityX(x);
+        this.body.setVelocityY(y);
+
+    }
 
 
 
