@@ -21,12 +21,12 @@ export default class Bootloader extends Phaser.Scene {
 
     set_load_events() {
         this.load.on('complete', () => {
-            // this.scene.start('splash');
-            this.scene.start('game');           // ---- !!! TESTING PURPOSES ONLY !!! ---- //
+            this.scene.start('splash');
+            // this.scene.start('game');           // ---- !!! TESTING PURPOSES ONLY !!! ---- //
             // this.scene.start('gameover');           // ---- !!! TESTING PURPOSES ONLY !!! ---- //
             // this.scene.start('info');           // ---- !!! TESTING PURPOSES ONLY !!! ---- //
             // this.scene.start('workshop');           // ---- !!! TESTING PURPOSES ONLY !!! ---- //
-        });
+        }, this);
     }
 
 
