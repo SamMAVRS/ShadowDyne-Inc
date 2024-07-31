@@ -20,21 +20,21 @@ export default class Boss extends Phaser.GameObjects.Image {
         this.is_hit = false;
 
         // --- STATIC VALUES --- //
-        this.health_value = 20;
-        this.damage_value = 5;
-        this.armor_value = 0;
+        // this.health_value = 20;
+        // this.damage_value = 5;
+        // this.armor_value = 0;
 
         // --- OBJECT GEAR ---
-        this.damage_primary_value = 2;
-        this.damage_super_value = 10;
-        this.armor_value = 0;
+        // this.damage_primary_value = 2;
+        // this.damage_super_value = 10;
+        // this.armor_value = 0;
 
         // --- OBJECT RESISTENCES --- //
-        this.resist_kenetic_value = 0;
-        this.resist_thermal_value = 0;
-        this.resist_shock_value = 0;
-        this.resist_poison_value = 0;
-        this.resist_bleed_value = 0;
+        // this.resist_kenetic_value = 0;
+        // this.resist_thermal_value = 0;
+        // this.resist_shock_value = 0;
+        // this.resist_poison_value = 0;
+        // this.resist_bleed_value = 0;
 
         // --- EVENT TRIGGERS --- //
         this.on_hit;
